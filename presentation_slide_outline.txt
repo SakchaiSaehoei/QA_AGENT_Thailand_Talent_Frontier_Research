@@ -1,0 +1,517 @@
+Automatic Question Answering and Intro to Agents
+Presentation Slide Outline
+
+Audience: High school students
+Total time: about 90 minutes
+Format: slides + live coding from the notebook
+Notebook file: /Users/flow/Documents/NECTEC/QA_AGENT_Thailand_Talent_Frontier_Research/automatic_qa_and_agents_course.ipynb
+
+Suggested time split
+- Slides opening: 10 minutes
+- Basic Q&A live demo: 20 minutes
+- Agent concept + RAG demo: 25 minutes
+- SQL agent demo: 25 minutes
+- Wrap-up + questions: 10 minutes
+
+Slide 1: Title
+Purpose
+- Open the class.
+- Set the topic and expectation.
+
+Bullet points
+- Automatic Question Answering and Intro to Agents
+- Today we will build simple AI systems in one notebook
+- We will learn LLM, prompt, agent, RAG, and SQL agent
+
+Jump to code?
+- No
+
+Speaker script
+- Today we will learn how AI can answer questions automatically.
+- We will start from the simplest version, then we will make it smarter by adding tools.
+- By the end of class, you will see three levels: basic question answering, a RAG agent, and a SQL agent.
+
+Slide 2: What students will learn
+Purpose
+- Give students a clear roadmap.
+
+Bullet points
+- What an LLM is
+- What a prompt is
+- What an agent is
+- How to build a simple question answering system
+- How RAG and SQL agents are different
+
+Jump to code?
+- No
+
+Speaker script
+- Before we code, I want you to know the big picture.
+- There are only a few ideas today, and we will repeat them many times.
+- If you understand LLM, prompt, and tool, you can already understand a lot of modern AI systems.
+
+Slide 3: What is Automatic Question Answering?
+Purpose
+- Introduce the main course topic with a simple example.
+
+Bullet points
+- A human asks a question in normal language
+- The system reads the question
+- The system returns a useful answer
+- Goal: make answers clear, relevant, and fast
+
+Jump to code?
+- No
+
+Speaker script
+- Automatic question answering means a person asks something in natural language and the computer tries to answer.
+- This can be used in tutoring, customer support, school helpers, and search systems.
+- Our focus today is not a full chatbot product. Our focus is understanding the main ideas through small examples.
+
+Slide 4: Core idea 1, LLM
+Purpose
+- Explain the LLM simply.
+
+Bullet points
+- LLM stands for Large Language Model
+- It reads text and generates text
+- It is the main reasoning engine in our examples
+- By itself, it does not magically know our private data
+
+Jump to code?
+- No
+
+Speaker script
+- The LLM is the part that reads words and writes words.
+- You can think of it as the brain of the system.
+- But a brain alone is not enough if it needs outside information, like class notes or a database.
+
+Slide 5: Core idea 2, Prompt
+Purpose
+- Explain prompt engineering at a beginner level.
+
+Bullet points
+- A prompt is the instruction we give the model
+- It can define role, tone, style, and output format
+- Good prompts make answers more useful
+- Prompts are simple but powerful
+
+Jump to code?
+- No
+
+Speaker script
+- The prompt is how we tell the model what we want.
+- If I say answer like a teacher, the output changes.
+- If I say answer in two sentences, the output changes again.
+- So even before tools, prompts already matter a lot.
+
+Slide 6: Core idea 3, Agent
+Purpose
+- Introduce the agent idea before coding.
+
+Bullet points
+- Agent = LLM + tools
+- Tools help the model do more than plain text generation
+- Tools can search notes, query a database, or call an API
+- Agents are useful when the answer needs outside information
+
+Jump to code?
+- No
+
+Speaker script
+- An agent is not a completely different thing from an LLM.
+- It is better to think of an agent as an LLM that can use tools.
+- Today we will build two very basic agent examples so the concept stays concrete.
+
+Slide 7: Our learning ladder
+Purpose
+- Show progression from simple to more advanced.
+
+Bullet points
+- Level 1: Basic LLM question answering
+- Level 2: Add a retrieval tool for documents
+- Level 3: Add SQL tools for database questions
+- Same idea, stronger capabilities
+
+Jump to code?
+- No
+
+Speaker script
+- We are going to build step by step.
+- First we ask the model directly.
+- Then we give it a tool for documents.
+- Then we give it tools for a database.
+- This progression is the most important thing to remember from today.
+
+Slide 8: Live demo 1, basic question answering
+Purpose
+- Start coding the simplest version.
+
+Bullet points
+- Create a ChatOpenAI model
+- Send a system message and a human message
+- Get a short answer
+- See how prompt changes the result
+
+Jump to code?
+- Yes
+- Jump to notebook section: "1. Basic automatic question answering"
+- Run the install cell only if needed
+- Run the API key cell
+- Run the `ChatOpenAI` setup cell
+- Run the first `messages` example
+- Run `ask_basic_qa`
+
+Speaker script
+- Now we move from slides to code.
+- First, we build the simplest automatic question answering system possible.
+- Notice that there is no tool yet. It is only the model and a prompt.
+- After we run it once, we will change the question and see how flexible it is.
+
+Slide 9: What happened in demo 1?
+Purpose
+- Reinforce what students just saw.
+
+Bullet points
+- The system message defined the role
+- The human message gave the task
+- The model generated the answer
+- This is useful, but still limited
+
+Jump to code?
+- Briefly point to the same notebook cells if needed
+
+Speaker script
+- We already have a working question answering system.
+- But it still has a limitation: it only answers from its training and our prompt.
+- If we want it to use our own notes, we need something more.
+
+Slide 10: Why plain LLMs are not enough
+Purpose
+- Motivate the need for tools.
+
+Bullet points
+- The model may not know class-specific facts
+- The model may need more reliable context
+- The model may need structured data
+- Tools solve this problem
+
+Jump to code?
+- No
+
+Speaker script
+- This is the moment where students usually ask, why do we need agents at all?
+- The answer is simple: sometimes the model needs extra help.
+- If the answer lives in notes or in a database, we should let the system go get it.
+
+Slide 11: RAG idea
+Purpose
+- Explain the RAG pipeline before the demo.
+
+Bullet points
+- RAG = Retrieval-Augmented Generation
+- Step 1: store useful documents
+- Step 2: retrieve relevant documents
+- Step 3: answer using retrieved context
+
+Jump to code?
+- No
+
+Speaker script
+- RAG is one of the most common practical AI patterns.
+- The idea is not to trust the model alone.
+- Instead, we first retrieve supporting information, then the model answers based on that information.
+
+Slide 12: Live demo 2, tiny RAG example
+Purpose
+- Show document-based retrieval.
+
+Bullet points
+- Create a few small documents
+- Embed them into a vector store
+- Retrieve documents for a question
+- Show the matched text
+
+Jump to code?
+- Yes
+- Jump to notebook section: "2.1 RAG Agent"
+- Run the `Document(...)` cell
+- Run the embeddings and vector store cell
+- Run the retriever cell
+
+Speaker script
+- Here we simulate a tiny knowledge base using just a few documents.
+- Then we convert those documents into a searchable form.
+- When we ask a question, the system brings back the most relevant pieces.
+- This is the retrieval part of RAG.
+
+Slide 13: From retrieval to RAG agent
+Purpose
+- Show the difference between retrieval alone and an agent using a tool.
+
+Bullet points
+- Retrieval gives us relevant context
+- A tool wraps retrieval into a function
+- The agent can decide when to use that tool
+- This creates a simple RAG agent
+
+Jump to code?
+- Yes
+- Stay in notebook section: "2.1 RAG Agent"
+- Run `retrieve_context`
+- Run `create_agent`
+- Run the `rag_agent.invoke(...)` example
+
+Speaker script
+- Retrieval alone is useful, but now we go one step further.
+- We package retrieval into a tool.
+- Then the model can call that tool when it needs facts from the notes.
+- That is why this becomes an agent.
+
+Slide 14: What students should notice in the RAG demo
+Purpose
+- Make the concept stick.
+
+Bullet points
+- The answer came from retrieved notes
+- The model did not rely only on memory
+- RAG is good when information is in text documents
+- Good for notes, manuals, articles, PDFs
+
+Jump to code?
+- Optional
+
+Speaker script
+- The big takeaway is that the model is no longer working alone.
+- It now has access to a text knowledge source.
+- This is one of the most useful patterns in modern AI applications.
+
+Slide 15: SQL agent idea
+Purpose
+- Transition from text data to table data.
+
+Bullet points
+- Sometimes information is not in documents
+- Sometimes information is in rows and columns
+- For table data, SQL is often a better tool
+- So we build a SQL agent
+
+Jump to code?
+- No
+
+Speaker script
+- RAG is great for text, but not everything is text.
+- If your data looks like a spreadsheet or a table, SQL is usually a better approach.
+- That is why we need a different kind of tool for the next demo.
+
+Slide 16: Live demo 3, build a tiny database
+Purpose
+- Show that the data source is structured.
+
+Bullet points
+- Create a SQLite database
+- Add a `students` table
+- Insert a few student records
+- Inspect the rows
+
+Jump to code?
+- Yes
+- Jump to notebook section: "2.2 SQL Agent"
+- Run the `sqlite3` setup cell
+
+Speaker script
+- We will build a very small database inside the notebook.
+- This keeps the example simple and visible.
+- Notice that our data now has columns like name, grade level, and scores.
+
+Slide 17: Live demo 4, SQL tools and SQL agent
+Purpose
+- Show how an agent works with database tools.
+
+Bullet points
+- Connect LangChain to the database
+- Create SQL tools
+- Build the SQL agent
+- Ask a question in natural language
+
+Jump to code?
+- Yes
+- Stay in notebook section: "2.2 SQL Agent"
+- Run the `SQLDatabase` cell
+- Run the `SQLDatabaseToolkit` cell
+- Run the `create_agent` cell
+- Run the `sql_agent.invoke(...)` cell
+
+Speaker script
+- Now the model gets tools that help it inspect and query the database.
+- The student can ask a normal language question, but under the hood the tools help translate that into database work.
+- This is a good example of how AI can sit on top of structured data.
+
+Slide 18: Compare basic QA, RAG, and SQL agent
+Purpose
+- Summarize the full lesson.
+
+Bullet points
+- Basic QA: prompt plus LLM
+- RAG: LLM plus document retrieval
+- SQL agent: LLM plus database tools
+- Choose the tool based on where the knowledge lives
+
+Jump to code?
+- Optional, point to comparison table in notebook section "3. Compare the three levels"
+
+Speaker script
+- We now have three levels of capability.
+- The core model is still important in all of them.
+- What changes is the tool access.
+- This is the main design lesson of the class.
+
+Slide 19: Real-world examples
+Purpose
+- Help students connect the lesson to real applications.
+
+Bullet points
+- School study assistant using notes
+- Library helper using documents
+- Student score helper using database tables
+- Customer support assistant using company knowledge
+
+Jump to code?
+- No
+
+Speaker script
+- These ideas are not only for demos.
+- Real systems often combine these same patterns.
+- Once students understand this, they can already imagine how AI products are built.
+
+Slide 20: From Q&A system to chatbot
+Purpose
+- Show the natural next step without adding too much complexity.
+
+Bullet points
+- A Q&A system answers one question at a time
+- A chatbot keeps the conversation going across many turns
+- Add memory of previous messages
+- Add a friendly chat interface
+
+Jump to code?
+- No
+
+Speaker script
+- What we built today answers questions well, but usually one question at a time.
+- A chatbot is the next step.
+- It keeps the conversation history, so it remembers what the user asked before.
+- In simple words, a chatbot is often a question answering system plus conversation memory and a chat interface.
+
+Slide 21: Wrap-up
+Purpose
+- Close the lesson and reinforce the simplest takeaways.
+
+Bullet points
+- Prompt tells the model what to do
+- LLM answers with generated text
+- Agent uses tools
+- Use RAG for text and SQL for tables
+
+Jump to code?
+- Optional return to notebook wrap-up section
+
+Speaker script
+- If you remember only one sentence, remember this: an agent is an LLM with tools.
+- If the information is in text, RAG is usually a good fit.
+- If the information is in tables, SQL is usually a good fit.
+- That is the foundation for many practical AI systems.
+
+Slide 22: Q&A or mini challenge
+Purpose
+- End with interaction.
+
+Bullet points
+- Add one new document to the RAG example
+- Ask one harder database question
+- Change the prompt style
+- Discuss what other tools could be added
+
+Jump to code?
+- Yes, if there is time
+- Return to the notebook for student experiments
+Speaker script
+- If we have a few minutes left, let us modify the examples together.
+- Small changes are the best way to make these ideas feel real.
+- Try changing the data, changing the prompt, or changing the question and observe what happens.
+Quick presenter notes
+- Do not stay too long on theory before the first demo.
+- After each live demo, return to one slide that explains what just happened.
+- Keep repeating the phrase: "LLM plus tools equals agent."
+- For high school students, concrete examples matter more than formal definitions.
+- If time runs short, keep the SQL section shorter but do not skip the final comparison slide.
+
+Slide 7: Core Idea 4 — RAG
+Purpose
+
+Explain Retrieval-Augmented Generation in a simple way.
+
+Bullet points
+
+RAG stands for Retrieval-Augmented Generation
+
+It means: retrieve information first, then generate an answer
+
+The model does not memorize everything
+
+RAG lets the model use external documents
+
+Jump to code?
+
+No
+
+Speaker Script
+
+RAG is a very important idea.
+
+Instead of asking the model to “remember everything,” we let it look up information first.
+
+First, we retrieve relevant documents.
+
+Then, we give those documents to the LLM.
+
+Finally, the LLM generates an answer based on that information.
+
+So RAG = Search first → Answer second.
+
+This is much safer and more accurate than relying only on the model’s memory.
+
+Slide 8: Core Idea 5 — Database
+Purpose
+
+Explain the role of databases in AI systems.
+
+Bullet points
+
+A database stores structured data
+
+Examples: sales records, student data, inventory
+
+LLMs do not automatically know database content
+
+Agents can query databases using tools
+
+Jump to code?
+
+No
+
+Speaker Script
+
+A database is where we store structured information.
+
+For example: sales numbers, product lists, student grades.
+
+The LLM does not magically know what is inside our company database.
+
+So we must connect it using tools.
+
+The agent can translate a question into a database query.
+
+Then it uses the results to generate a final answer.
+
+This is how we build real-world AI systems.
